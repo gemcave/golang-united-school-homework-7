@@ -21,14 +21,21 @@ func init() {
 }
 
 // WRITE YOUR CODE BELOW
-func TestLen(t *testing.T) {
-	as := assert.New(t)
-	person01 := Person {"Lisa", "Joy", time.Date(1984, time.April,14,0,0,0,0, time.UTC)}
-	person02 := Person {"Chris", "Nolan", time.Date(1978,time.July,25,0,0,0,0, time.UTC)}
-	person03 := Person {"Anthony", "Hop", time.Date(1967,time.January,9,0,0,0,0, time.UTC)}
-	peopleList := People{person01, person02, person03}
-	as.Equal(peopleList.Len(), 3)
-	
+
+func TestLenPeople(t *testing.T) {
+	personA := Person{firstName: "John", lastName: "Smith",
+		birthDay: time.Date(1997, time.March, 1, 0, 0, 0, 0, time.UTC),
+	}
+	personB := Person{firstName: "Jane", lastName: "Smith",
+		birthDay: time.Date(1995, time.July, 10, 10, 10, 0, 0, time.UTC),
+	}
+	expectedResult := 2
+	listPeople := People{personA, personB}
+
+	actualResult := listPeople.Len()
+	if actualResult != expectedResult {
+		t.Errorf("Expeсted Len: %d, Received Len: %d", expectedResult, actualResult)
+	}
 }
 
 func TestLessPeopleFirstName(t *testing.T) {
@@ -83,44 +90,6 @@ func TestNew(t *testing.T){
 	}
 }
 
-func TestRows(t *testing.T) {
-	as := assert.New(t)
-	mx01 := Matrix{1,1,[]int{0}}
-	mx02 := Matrix{2,1,[]int{13,55}}
-	mx03 := Matrix{2,2,[]int{3, 9, 12, 15}}
-	tMatrix := []struct{
-		matrix Matrix
-		expected [][]int
-	}{
-		{mx01, [][]int{[]int{0}}},
-		{mx02, [][]int{[]int{13}, []int{55}}},
-		{mx03, [][]int{[]int{3, 9}, []int{12, 15}}},
-	}
-	for _, value := range tMatrix{
-		actual := value.matrix.Rows()
-		as.EqualValues(value.expected, actual)
-	}
-}
-
-func TestCols(t *testing.T) {
-	as := assert.New(t)
-	mx01 := Matrix{1,1,[]int{0}}
-	mx02 := Matrix{2,1,[]int{13,55}}
-	mx03 := Matrix{2,2,[]int{3, 9, 12, 15}}
-	tMatrix := []struct{
-		matrix Matrix
-		expected [][]int
-	}{
-		{mx01, [][]int{[]int{0}}},
-		{mx02, [][]int{[]int{13, 55}}},
-		{mx03, [][]int{[]int{3, 12}, []int{9, 15}}},
-	}
-	for _, value := range tMatrix{
-		actual := value.matrix.Cols()
-		as.EqualValues(value.expected, actual)
-	}
-}
-
 func TestSet(t *testing.T) {
 	as := assert.New(t)
 	mx01 := Matrix{2,2,[]int{33, 55, 8, 6}}
@@ -138,4 +107,36 @@ func TestSet(t *testing.T) {
 		as.Equal(value.ecpected, actual)
 	}
 
+	}
+
+	func TestRowsMatrix(t *testing.T) {
+		m, err := New("10 20\n30 40")
+		if err != nil {
+			t.Errorf("Failed to create a new Matrix")
+		}
+		expected := [][]int{{10, 20}, {30, 40}}
+		result := m.Rows()
+		for i, value := range result {
+			for j, valCol := range value {
+				if valCol != expected[i][j] {
+					t.Errorf("Expected Result %d, Received Result %d", expected[i][j], valCol)
+				}
+			}
+		}
+	}
+	
+	func TestColsMatrix(t *testing.T) {
+		m, err := New("10 20\n30 40")
+		if err != nil {
+			t.Errorf("Failed to create a new Matrix")
+		}
+		expected := [][]int{{10, 30}, {20, 40}}
+		result := m.Cols()
+		for i, value := range result {
+			for j, valRow := range value {
+				if valRow != expected[i][j] {
+					t.Errorf("Expected Result %d, Received Result %d", expected[i][j], valRow)
+				}
+			}
+		}
 	}
