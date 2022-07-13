@@ -40,10 +40,10 @@ func TestLenPeople(t *testing.T) {
 
 func TestLessPeopleFirstName(t *testing.T) {
 	personA := Person{firstName: "John", lastName: "Smith",
-		birthDay: time.Date(2002, time.March, 1, 0, 0, 0, 0, time.UTC),
+		birthDay: time.Date(1998, time.March, 1, 0, 0, 0, 0, time.UTC),
 	}
 	personB := Person{firstName: "Jane", lastName: "Smith",
-		birthDay: time.Date(2002, time.March, 1, 0, 0, 0, 0, time.UTC),
+		birthDay: time.Date(1996, time.March, 1, 0, 0, 0, 0, time.UTC),
 	}
 	peopleList := People{personA, personB}
 	expectedResult := true
