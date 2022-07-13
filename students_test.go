@@ -31,49 +31,36 @@ func TestLen(t *testing.T) {
 	
 }
 
-func TestLess(t *testing.T){
-	as := assert.New(t)
-	person01 := Person {"Lisa", "Joy", time.Date(1984, time.April,14,0,0,0,0, time.UTC)}
-	person02 := Person {"Chris", "Nolan", time.Date(1978,time.July,25,0,0,0,0, time.UTC)}
-	person03 := Person {"Anthony", "Hop", time.Date(1967,time.January,9,0,0,0,0, time.UTC)}
-	peopleList := People{person01, person02, person03}
-
-	tPeopleList := []struct{
-		peopleList People
-		i int
-		j int
-		Expected bool
-	}{
-		{peopleList, 0, 1, true}, 
-		{peopleList, 1, 0, false},
-		{peopleList, 0, 2, false},	
-		{peopleList, 2, 0, true},	
-		{peopleList, 0, 3, false},
-		{peopleList, 3, 0, true},
+func TestLessPeopleFirstName(t *testing.T) {
+	personA := Person{firstName: "John", lastName: "Smith",
+		birthDay: time.Date(2002, time.March, 1, 0, 0, 0, 0, time.UTC),
 	}
-	for _, value := range tPeopleList{
-		i := value.i
-		j := value.j
-		expected := value.Expected
-		as.Equal(expected, peopleList.Less(i,j))
+	personB := Person{firstName: "Jane", lastName: "Smith",
+		birthDay: time.Date(2002, time.March, 1, 0, 0, 0, 0, time.UTC),
 	}
-
+	peopleList := People{personA, personB}
+	expectedResult := true
+	actualResult := peopleList.Less(0, 1)
+	if actualResult != expectedResult {
+		t.Errorf("People Less Function: Expeсted Result: %t, Received Result: %t", expectedResult, actualResult)
+	}
 }
 
-func TestSwap(t *testing.T){
-	as := assert.New(t)
-	person01 := Person {"Lisa", "Joy", time.Date(1984, time.April,14,0,0,0,0, time.UTC)}
-	person02 := Person {"Chris", "Nolan", time.Date(1978,time.July,25,0,0,0,0, time.UTC)}
-	person03 := Person {"Anthony", "Hop", time.Date(1967,time.January,9,0,0,0,0, time.UTC)}
-	peopleList01 := People{person01, person02, person03}
-	peopleList02 := People{person02, person01, person03}
-	peopleList03 := People{person01, person03, person02}
 
-	peopleList01.Swap(0,1)
-	as.EqualValues(peopleList01, peopleList02)
-	peopleList02.Swap(0, 3)
-	as.EqualValues(peopleList02, peopleList03)
+func TestSwap(t *testing.T) {
+	birthdayA := time.Date(1997, time.May, 10, 0, 0, 0, 0, time.UTC)
+	birthdayB := time.Date(1997, time.May, 5, 0, 0, 0, 0, time.UTC)
+	personA := Person{firstName: "John", lastName: "Smith", birthDay: birthdayA}
+	personB := Person{firstName: "Jane", lastName: "Smith", birthDay: birthdayB}
+	peopleList := People{personA, personB}
+
+	peopleList.Swap(0, 1)
+	if peopleList[0].firstName != "Jane" || peopleList[0].lastName != "Smith" || peopleList[0].birthDay != birthdayB ||
+		peopleList[1].firstName != "John" || peopleList[1].lastName != "Smith" || peopleList[1].birthDay != birthdayA {
+		t.Errorf("People Swap Function: Expeсted Result is different from Received Result")
+	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func TestNew(t *testing.T){
 	as := assert.New(t)
